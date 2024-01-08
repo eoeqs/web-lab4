@@ -8,17 +8,37 @@
     <p-tabPanel header="Login">
       <form name="form" (ngSubmit)="login()" #f="ngForm">
         <div class="select-radio">
-          <label for="l-username">Username</label>
-          <input id="l-username" type="text" name="username" [(ngModel)]="model.username" #username="ngModel" required/>
+          <label for="login-username">Username</label>
+          <input id="login-username" type="text" name="username" [(ngModel)]="model.username" #username="ngModel"
+                 required/>
         </div>
         <div class="elect-radio">
-          <label for="l-password">Password</label>
-          <input id="l-password" type="password" name="password" [(ngModel)]="model.password" #password="ngModel" required/>
+          <label for="login-password">Password</label>
+          <input id="login-password" type="password" name="password" [(ngModel)]="model.password" #password="ngModel"
+                 required/>
         </div>
         <div class="margin">
           <button>Login</button>
         </div>
       </form>
     </p-tabPanel>
+    <p-tabPanel header="Register">
+      <form name="form" (ngSubmit)="register()" #f="ngForm">
+        <div class="select-radio">
+          <label for="register-username">Username</label>
+          <input id="register-username" type="text" name="username" [(ngModel)]="model.username" #username="ngModel"
+                 required/>
+        </div>
+        <div class="elect-radio">
+          <label for="register-password">Password</label>
+          <input id="register-password" type="password" name="password" [(ngModel)]="model.password" #password="ngModel"
+                 required/>
+        </div>
+        <div class="margin">
+          <button>Register</button>
+        </div>
+      </form>
+    </p-tabPanel>
   </p-tabView>
 </div>
+<router-outlet></router-outlet>

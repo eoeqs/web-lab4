@@ -9,10 +9,11 @@ import {MainComponent} from "./components/main/main.component";
 import {AppComponent} from "./app.component";
 import {ButtonModule} from 'primeng/button';
 import {RadioButtonModule} from "primeng/radiobutton";
-// import {RequestInterceptor} from "./request.interceptor";
+import {RequestInterceptor} from "./request.interceptor";
 import {TableModule} from "primeng/table";
 import {TabViewModule} from "primeng/tabview";
-import { RouterModule } from '@angular/router';
+import {RouterModule} from '@angular/router';
+import {CheckboxModule} from "primeng/checkbox";
 
 
 @NgModule({
@@ -21,20 +22,21 @@ import { RouterModule } from '@angular/router';
     DataComponent,
     MainComponent
   ],
-  imports: [
-    RouterModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    ButtonModule,
-    ReactiveFormsModule,
-    FormsModule,
-    RadioButtonModule,
-    TableModule,
-    TabViewModule
-  ],
-  // providers: [{provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true}],
+    imports: [
+        RouterModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        ButtonModule,
+        ReactiveFormsModule,
+        FormsModule,
+        RadioButtonModule,
+        TableModule,
+        TabViewModule,
+        CheckboxModule
+    ],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule {
