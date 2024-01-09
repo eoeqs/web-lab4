@@ -32,9 +32,9 @@ public class UserController {
 
     @PostMapping("/check")
     public boolean checkUser(@RequestBody UserDto userDto) {
-        String login = userDto.getLogin();
+        String username = userDto.getUsername();
         String password = userDto.getPassword();
-        User user = authManager.getOldUser(login, password);
+        User user = authManager.getOldUser(username, password);
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "bad request");
         }
@@ -43,18 +43,12 @@ public class UserController {
 
     @PostMapping("/new")
     public boolean getNewUser(@RequestBody UserDto userDto) {
-        String login = userDto.getLogin();
+        String username = userDto.getUsername();
         String password = userDto.getPassword();
-        User user = authManager.getNewUser(login, password);
+        User user = authManager.setNewUser(username, password);
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "bad request");
         }
-        if (user.getLogin() == null) {
-            return ResponseEntity.badRequest().body("User login cannot be null").hasBody();
-        }
-        user.setLogin(login);
-
-        userRepository.save(user);
         return true;
     }
 

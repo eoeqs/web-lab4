@@ -15,30 +15,37 @@ public class AuthManager {
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    public User getNewUser(String login, String password) {
+
+    public User setNewUser(String username, String password) {
         for (User user : userRepository.findAll()) {
-            if (user.getLogin().equals(login)) {
+            if (user.getUsername().equals(username)) {
                 return null;
             }
         }
-        return new User(login, password);
+
+        User newUser = new User();
+        newUser.setUsername(username);
+        newUser.setPassword(password);
+        userRepository.save(newUser);
+        return new User(username, password);
+        //return getOldUser(username, password);
     }
 
-    public User getOldUser(String login, String password) {
-        if (login == null || password == null) return null;
+    public User getOldUser(String username, String password) {
+        if (username == null || password == null) return null;
         String hashPassword = PasswordManager.getHash(password);
         for (User user : userRepository.findAll()) {
-            if (user.getLogin().equals(login) && user.getPassword().equals(hashPassword)) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(hashPassword)) {
                 return user;
             }
         }
         return null;
     }
 
-    public User getOldUserByHash(String login, String hashPassword) {
-        if (login == null || hashPassword == null) return null;
+    public User getOldUserByHash(String username, String hashPassword) {
+        if (username == null || hashPassword == null) return null;
         for (User user : userRepository.findAll()) {
-            if (user.getLogin().equals(login) && user.getPassword().equals(hashPassword)) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(hashPassword)) {
                 return user;
             }
         }
@@ -50,8 +57,8 @@ public class AuthManager {
         byte[] decodedBytes = Base64.getDecoder().decode(loginColonPassword);
         String decodedString = new String(decodedBytes);
         String[] loginPassword = decodedString.split(":");
-        String login = loginPassword[0];
+        String username = loginPassword[0];
         String password = loginPassword[1];
-        return getOldUser(login, password);
+        return getOldUser(username, password);
     }
 }
