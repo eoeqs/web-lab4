@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/points")
-@CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping("/web-4-eoeqs/api/points")
+@CrossOrigin(origins = "http://localhost:4200")
 public class PointController {
     private PointRepository pointRepository;
 
@@ -66,7 +66,6 @@ public class PointController {
     }
 
     @PostMapping("/clear")
-    @CrossOrigin
     @Transactional
     public void clearAttempts(@RequestHeader Map<String, String> headers) {
         User user = authManager.getOldUserByAuthorizationHeader(headers.get("authorization"));

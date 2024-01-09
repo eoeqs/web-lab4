@@ -11,8 +11,8 @@ import web.back.services.AuthManager;
 
 
 @RestController
-@RequestMapping("/api/users")
-@CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping("/web-4-eoeqs/api/users")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
     private UserRepository userRepository;
     private AuthManager authManager;
