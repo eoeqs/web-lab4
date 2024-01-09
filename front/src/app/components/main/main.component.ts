@@ -1,11 +1,13 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, HostListener, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {Result} from "../../model";
+import {GraphPoint, PostResponse, Result, ResultRequest} from "../../model";
 
-declare function on_main_load(): void;
-
-declare function clearAllPoints(): void;
+declare function enable_graph() : void;
+declare function on_main_load() : void;
+declare function drawGraphByR(r : number) : void;
+declare function drawPointXYRRes(x : number, y : number, r : number, result : boolean) : void;
+declare function clearAllPoints() : void;
 
 
 @Component({
@@ -14,9 +16,7 @@ declare function clearAllPoints(): void;
   styleUrl: './main.component.css'
 })
 export class MainComponent implements OnInit, AfterViewInit {
-  private readonly logoutUrl = 'http://localhost:8080/web-4-eoeqs/app/logout';
-  private readonly checkHitUrl = 'http://localhost:8080/web-4-eoeqs/app/check-hit';
-  private readonly helloUrl = 'http://localhost:8080/web-4-eoeqs/app/hello';
+  private readonly checkHitUrl = 'http://localhost:8080/web-4-eoeqs/api/points/new';
   constructor(private http: HttpClient, private router: Router) {
   }
 
@@ -31,23 +31,22 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     on_main_load();
-    this.http.get<any>(this.helloUrl).subscribe(
+    this.http.get<Result[]>(this.checkHitUrl).subscribe(
       {
-        next: (resp) => {
-          console.log(resp.message);
+        next: (resp: Result[]) => {
+          this.results = resp;
+          resp.forEach(res => {
+            drawPointXYRRes(res.request.x, res.request.y, res.request.r, res.result);
+          })
+          drawGraphByR(Number(this.r_select));
         },
+
         error: (err) => {
           console.error(err);
           console.log(err.message);
-          console.error('Failed to load hello message.');
-          this.router.navigate(['']).then((navigationSuccess: boolean) => {
-            if (!navigationSuccess) {
-              console.error('Something went wrong during navigation...');
-            }
-          });
         }
       }
-    );
+    )
   }
 
   submitForm(form: any): void {
@@ -59,26 +58,34 @@ export class MainComponent implements OnInit, AfterViewInit {
     }
   }
 
-  sendData(): void {
-    const data = {
-      x: this.x_select,
-      y: this.y_select,
-      r: this.r_select
-    };
-
-    this.http.post<Result>('http://your-api-url', data)
-      .subscribe(
-        (result: Result) => {
-          console.log('Data sent successfully:', result);
-          this.results.push(result);
-        },
-        error => {
-          console.error('Error sending data:', error);
-        }
-      );
+  sendData() {
+    const request = new ResultRequest();
+    request.x = Number(this.x_select);
+    request.y = this.y_select;
+    request.r = Number(this.r_select);
+    this.sendCheckRequest(request);
   }
 
-  clearTable(): void {
+  @HostListener('window:onGraph', ['$event.detail'])
+  onLogin(detail : GraphPoint) {
+    const request = new ResultRequest();
+    request.x = detail.x;
+    request.y = detail.y;
+    request.r = Number(this.r_select);
+    this.sendCheckRequest(request);
+  }
+
+  sendCheckRequest(request : ResultRequest) {
+    this.http.post<Result>(this.checkHitUrl, request)
+      .subscribe((res : Result) => {
+          if (res) {
+            this.results.push(res);
+            drawPointXYRRes(res.request.x, res.request.y, res.request.r, res.result);
+          }
+        }
+      )
+  }
+  clearTable() {
     this.http.delete(this.checkHitUrl).subscribe(
       {
         next: () => {
@@ -93,15 +100,22 @@ export class MainComponent implements OnInit, AfterViewInit {
       }
     );
   }
+  // logout() {
+  //   this.http.delete(environment.backendURL + "/app/logout").subscribe(() => {
+  //     sessionStorage.removeItem('token');
+  //     this.router.navigate(['']).then(r => {
+  //       if (!r) {
+  //         console.error("something went wrong...");
+  //       }
+  //     });
+  //   });
+  // }
 
-  logout(): void {
-    this.http.delete(this.logoutUrl).subscribe(() => {
-      sessionStorage.removeItem('token');
-      this.router.navigate(['']).then(r => {
-        if (!r) {
-          console.error("something went wrong...");
-        }
-      });
-    });
+  onRChange() {
+    drawGraphByR(Number(this.r_select));
+  }
+
+  enable_graph() {
+    enable_graph();
   }
 }

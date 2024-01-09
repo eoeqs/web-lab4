@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {AppRoutingModule} from './app.routes';
+import {AppRoutingModule} from './app-routing.module';
 import {DataComponent} from './components/data/data.component';
 import {MainComponent} from "./components/main/main.component";
 import {AppComponent} from "./app.component";

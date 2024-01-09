@@ -16,6 +16,14 @@ export class AuthTokenResponse {
   }
 }
 
+export class PostResponse {
+  message: string;
+
+  constructor() {
+    this.message = "";
+  }
+}
+
 export class ResultRequest {
   x: number;
   y: number;
@@ -35,5 +43,15 @@ export class Result {
   constructor() {
     this.request = new ResultRequest();
     this.result = false;
+  }
+}
+
+export class GraphPoint {
+  x: number;
+  y: number;
+
+  constructor() {
+    this.x = 0;
+    this.y = 0;
   }
 }

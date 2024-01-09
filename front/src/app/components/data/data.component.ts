@@ -24,23 +24,20 @@ export class DataComponent implements OnInit, OnDestroy{
   }
 
   register() {
-    this.proceedAuthRequest(this.registerUrl);
+    this.proceedRegisterRequest(this.registerUrl);
   }
 
-  proceedAuthRequest(url : string) {
+  proceedAuthRequest(url: string) {
     const authRequest = {
       username: this.model.username,
       password: this.model.password
     };
-    console.log(authRequest.username, authRequest.password)
 
     this.http.post<AuthTokenResponse>(url, authRequest)
       .pipe(
         tap((res: AuthTokenResponse) => {
-          console.log(res)
           if (res && res.sessionID) {
             this.sessionID = res.sessionID;
-            console.log(this.sessionID)
             localStorage.setItem('token', this.sessionID);
             this.router.navigate(['main']);
           } else {
@@ -54,7 +51,27 @@ export class DataComponent implements OnInit, OnDestroy{
       )
       .subscribe();
   }
+  proceedRegisterRequest(url: string) {
+    const authRequest = {
+      username: this.model.username,
+      password: this.model.password
+    };
+
+    this.http.post(url, authRequest)
+      .pipe(
+        tap((res: any) => {
+          console.log(res);
+          this.proceedAuthRequest(this.loginUrl);
+        }),
+        catchError((err) => {
+          console.error("Registration failed", err);
+          throw err;
+        })
+      )
+      .subscribe();
+  }
   ngOnDestroy(): void {
+    clearInterval(this.intervalId);
   }
   constructor(private router: Router,
               private http: HttpClient) {
