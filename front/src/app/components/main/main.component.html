@@ -12,7 +12,7 @@
       </div>
     </div>
     <td class="form-items">
-      <form id="choose-form">
+      <form #chooseForm="ngForm" (ngSubmit)="submitForm(chooseForm)">
 
         <td class="label">
           <label for="x-select">Choose X:</label>
@@ -61,11 +61,11 @@
           </button>
         </div>
       </form>
-      <form>
+<!--      <form>-->
 <!--        <div id="return-index-container" class="select-container margin">-->
 <!--          <button id="return-to-index" pButton (click)="logout()" label="Logout and Return to index page"></button>-->
 <!--        </div>-->
-      </form>
+<!--      </form>-->
 
     </td>
   </tr>
@@ -93,8 +93,6 @@
   </p-table>
 
 </div>
-<script type="text/javascript" src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6">
 
-</script>
 
 <router-outlet></router-outlet>

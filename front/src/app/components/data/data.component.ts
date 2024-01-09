@@ -24,54 +24,57 @@ export class DataComponent implements OnInit, OnDestroy{
   }
 
   register() {
-    this.proceedRegisterRequest(this.registerUrl);
+    this.proceedAuthRequest(this.registerUrl);
   }
 
-  proceedAuthRequest(url: string) {
-    const authRequest = {
+  proceedAuthRequest(url : string) {
+    this.http.post<AuthTokenResponse>(url, {
       username: this.model.username,
       password: this.model.password
-    };
-
-    this.http.post<AuthTokenResponse>(url, authRequest)
-      .pipe(
-        tap((res: AuthTokenResponse) => {
-          if (res && res.sessionID) {
+    })
+      .subscribe(res => {
+          if (res) {
             this.sessionID = res.sessionID;
-            localStorage.setItem('token', this.sessionID);
-            this.router.navigate(['main']);
-          } else {
-            console.error("Authentication failed: Invalid response format");
-          }
-        }),
-        catchError((err) => {
-          console.error("Authentication failed", err);
-          throw err;
-        })
-      )
-      .subscribe();
-  }
-  proceedRegisterRequest(url: string) {
-    const authRequest = {
-      username: this.model.username,
-      password: this.model.password
-    };
 
-    this.http.post(url, authRequest)
-      .pipe(
-        tap((res: any) => {
-          console.log(res);
-          this.proceedAuthRequest(this.loginUrl);
-        }),
-        catchError((err) => {
-          console.error("Registration failed", err);
-          throw err;
-        })
+            localStorage.setItem(
+              'token',
+              this.sessionID
+            );
+
+            this.router.navigate(['main']).then(r => {
+              if (!r) {
+                console.error("something went wrong...");
+              }
+            });
+          } else {
+            console.error("auth failed");
+          }
+        },
+        err => {
+          alert(/<body.*?>([\s\S]*)<\/body>/.exec(err.error)![1]);
+        }
       )
-      .subscribe();
   }
+  // proceedRegisterRequest(url: string) {
+  //   const authRequest = {
+  //     username: this.model.username,
+  //     password: this.model.password
+  //   };
+  //
+  //   this.http.post(url, authRequest)
+  //     .pipe(
+  //       tap((res: any) => {
+  //         console.log(res);
+  //         this.proceedAuthRequest(this.loginUrl);
+  //       }),
+  //       catchError((err) => {
+  //         console.error("Registration failed", err);
+  //         throw err;
+  //       })
+  //     )
+  //     .subscribe();
+  // }
   ngOnDestroy(): void {
-    clearInterval(this.intervalId);
   }
   constructor(private router: Router,
               private http: HttpClient) {

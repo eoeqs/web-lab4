@@ -100,16 +100,6 @@ export class MainComponent implements OnInit, AfterViewInit {
       }
     );
   }
-  // logout() {
-  //   this.http.delete(environment.backendURL + "/app/logout").subscribe(() => {
-  //     sessionStorage.removeItem('token');
-  //     this.router.navigate(['']).then(r => {
-  //       if (!r) {
-  //         console.error("something went wrong...");
-  //       }
-  //     });
-  //   });
-  // }
 
   onRChange() {
     drawGraphByR(Number(this.r_select));
