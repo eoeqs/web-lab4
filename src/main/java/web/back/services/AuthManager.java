@@ -25,10 +25,10 @@ public class AuthManager {
 
         User newUser = new User();
         newUser.setUsername(username);
-        newUser.setPassword(password);
+        String hashPassword = PasswordManager.getHash(password);
+        newUser.setPassword(hashPassword);
         userRepository.save(newUser);
-        return new User(username, password);
-        //return getOldUser(username, password);
+        return new User(username, hashPassword);
     }
 
     public User getOldUser(String username, String password) {
@@ -42,15 +42,15 @@ public class AuthManager {
         return null;
     }
 
-    public User getOldUserByHash(String username, String hashPassword) {
-        if (username == null || hashPassword == null) return null;
-        for (User user : userRepository.findAll()) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(hashPassword)) {
-                return user;
-            }
-        }
-        return null;
-    }
+//    public User getOldUserByHash(String username, String hashPassword) {
+//        if (username == null || hashPassword == null) return null;
+//        for (User user : userRepository.findAll()) {
+//            if (user.getUsername().equals(username) && user.getPassword().equals(hashPassword)) {
+//                return user;
+//            }
+//        }
+//        return null;
+//    }
 
     public User getOldUserByAuthorizationHeader(String authorizationHeader) {
         String loginColonPassword = authorizationHeader.split(" ")[1];
