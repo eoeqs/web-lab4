@@ -1,7 +1,9 @@
+
 package web.back.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import web.back.dao.UserRepository;
@@ -47,7 +49,13 @@ public class UserController {
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "bad request");
         }
+        if (user.getLogin() == null) {
+            return ResponseEntity.badRequest().body("User login cannot be null").hasBody();
+        }
+        user.setLogin(login);
+
         userRepository.save(user);
         return true;
     }
+
 }
