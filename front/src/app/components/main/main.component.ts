@@ -2,6 +2,7 @@ import {AfterViewInit, Component, HostListener, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {GraphPoint, PostResponse, Result, ResultRequest} from "../../model";
+import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 
 declare function enable_graph() : void;
 declare function on_main_load() : void;
@@ -17,6 +18,8 @@ declare function clearAllPoints() : void;
 })
 export class MainComponent implements OnInit, AfterViewInit {
   private readonly checkHitUrl = 'http://localhost:8080/web-4-eoeqs/api/points/new';
+  private readonly logoutUrl = 'http://localhost:8080/web-4-eoeqs/api/users/logout';
+
   constructor(private http: HttpClient, private router: Router) {
   }
 
@@ -108,4 +111,15 @@ export class MainComponent implements OnInit, AfterViewInit {
   enable_graph() {
     enable_graph();
   }
+  logout() {
+    this.http.delete(this.logoutUrl).subscribe(() => {
+      sessionStorage.removeItem('token');
+      this.router.navigate(['']).then(r => {
+        if (!r) {
+          console.error("something went wrong...");
+        }
+      });
+    });
+  }
+
 }
