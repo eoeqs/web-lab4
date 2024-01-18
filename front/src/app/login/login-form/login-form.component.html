@@ -1,0 +1,44 @@
+<form (ngSubmit)="signIn()">
+  <div>
+    <input
+      placeholder="username"
+      type="text"
+      [formControl]="login"
+    />
+  </div>
+
+  <div *ngIf="login.invalid && login.touched; else other_content"
+       class="alert">
+    <div *ngIf="login.errors?.['required']">
+      Username cannot be empty
+    </div>
+  </div>
+  <ng-template #other_content>
+    <label class='alert-placeholder'> </label>
+  </ng-template>
+
+  <div>
+    <input
+      placeholder="password"
+      type="password"
+      [formControl]="password"
+    />
+  </div>
+
+  <div *ngIf="password.invalid && password.touched; else other_content"
+       class="alert">
+    <div *ngIf="password.errors?.['required']">
+      Password cannot be empty
+    </div>
+  </div>
+
+
+  <div *ngIf="loginError"
+       class="alert">
+    {{ loginErrorMessage }}
+  </div>
+
+
+  <button type="submit">SignIn</button>
+  <button type="button" (click)="signUp()">Register</button>
+</form>

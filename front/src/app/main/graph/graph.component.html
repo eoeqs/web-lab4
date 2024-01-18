@@ -1,0 +1,89 @@
+<svg
+  id="graphic"
+  width="300"
+  height="300"
+  (click)="checkHit($event)"
+>
+  <rect width="100%" height="100%" fill="none" />
+  <line
+    x1="0"
+    x2="100%"
+    y1="50%"
+    y2="50%"
+    stroke="black"
+    stroke-width="1"
+  />
+  <line
+    x1="97%"
+    x2="100%"
+    y1="47%"
+    y2="50%"
+    stroke="black"
+    stroke-width="1"
+  />
+  <line
+    x1="97%"
+    x2="100%"
+    y1="53%"
+    y2="50%"
+    stroke="black"
+    stroke-width="1"
+  />
+
+  <line
+    x1="50%"
+    x2="50%"
+    y1="0"
+    y2="100%"
+    stroke="black"
+    stroke-width="1"
+  />
+  <line
+    x1="47%"
+    x2="50%"
+    y1="3%"
+    y2="0"
+    stroke="black"
+    stroke-width="1"
+  />
+  <line
+    x1="53%"
+    x2="50%"
+    y1="3%"
+    y2="0"
+    stroke="black"
+    stroke-width="1"
+  />
+
+  <line *ngFor="let i of dashes"
+        [attr.x1]="i"
+        [attr.x2]="i"
+        y1="49%"
+        y2="51%"
+        stroke="black"
+        stroke-width="1">
+  </line>
+
+  <line *ngFor="let i of dashes"
+        x1="49%"
+        x2="51%"
+        [attr.y1]="i"
+        [attr.y2]="i"
+        stroke="black"
+        stroke-width="1">
+  </line>
+
+  <path
+    [attr.d]="Dpath"
+    stroke="black"
+    stroke-width="1"
+    fill="#d3d3d3"
+    fill-opacity="0.8"
+    id="graph-path"
+  />
+
+  <circle
+    *ngFor="let point of getResults()" [attr.cx]="point.x * 40 + 150" [attr.cy]="-point.y * 40 + 150" r="3" stroke-width="1" stroke="black" attr.fill="{{point.result ? 'green' : 'red'}} "  fill-opacity="1"
+  />
+
+</svg>

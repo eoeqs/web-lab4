@@ -1,0 +1,23 @@
+<table>
+  <thead class="tbl-header">
+  <th>X</th>
+  <th>Y</th>
+  <th>R</th>
+  <th class="hide">date&time</th>
+  <th class="hide">runtime</th>
+  <th class="special-header">result</th>
+  </thead>
+  <tbody class="tbl-content">
+  <tr *ngFor='let result of results'>
+    <td>{{ result.x }}</td>
+    <td>{{ result.y }}</td>
+    <td>{{ result.r }}</td>
+    <td class="hide">{{ result.time }}</td>
+    <td class="hide">{{ result.execution }} ms</td>
+    <td>{{ result.result }}</td>
+  </tr>
+  </tbody>
+</table>
+<button (click)="refresh()">
+  Clear
+</button>

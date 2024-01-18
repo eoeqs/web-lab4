@@ -1,0 +1,92 @@
+<form class="main_form" (ngSubmit)='submit()'>
+  <div [ngClass]="{'error-hovered' : x.invalid && x.touched, 'hovered': !(x.invalid && x.touched)}">
+    <label for="x">
+      <span id="x" class="letter-label">X: </span>
+
+      <div class="form_radio_btn">
+        <input id="xm1" type="radio" name="x" value="-3" [formControl]="x">
+        <label for="xm1">-3</label>
+      </div>
+      <div class="form_radio_btn">
+        <input id="xm05" type="radio" name="x" value="-2" [formControl]="x">
+        <label for="xm05">-2</label>
+      </div>
+      <div class="form_radio_btn">
+        <input id="x0" type="radio" name="x" value="-1" [formControl]="x">
+        <label for="x0">-1</label>
+      </div>
+      <div class="form_radio_btn">
+        <input id="x05" type="radio" name="x" value="0" [formControl]="x">
+        <label for="x05">0</label>
+      </div>
+      <div class="form_radio_btn">
+        <input id="x1" type="radio" name="x" value="1" [formControl]="x">
+        <label for="x1">1</label>
+      </div>
+      <div class="form_radio_btn">
+        <input id="x15" type="radio" name="x" value="2" [formControl]="x">
+        <label for="x15">2</label>
+      </div>
+      <div class="form_radio_btn">
+        <input id="x2" type="radio" name="x" value="3" [formControl]="x">
+        <label for="x2">3</label>
+      </div>
+      <div class="form_radio_btn">
+        <input id="xm15" type="radio" name="x" value="4" [formControl]="x">
+        <label for="xm15">4</label>
+      </div>
+      <div class="form_radio_btn">
+        <input id="xm2" type="radio" name="x" value="5" [formControl]="x">
+        <label for="xm2">5</label>
+      </div>
+    </label>
+  </div>
+  <div [ngClass]="{'error-hovered' : y.invalid && y.touched, 'hovered': !(y.invalid && y.touched)}">
+    <label>
+      <span class="letter-label">Y: </span>
+      <input type="text" name="y" placeholder="(-3...3)" [formControl]="y">
+    </label>
+  </div>
+  <div [ngClass]="{'error-hovered' : r.invalid && r.touched, 'hovered': !(r.invalid && r.touched)}">
+    <label for="r">
+      <span id="r" class="letter-label">R: </span>
+      <div class="form_radio_btn">
+        <input id="rm1" type="radio" name="r" value="-3" (change)="changeRadius()" [formControl]="r">
+        <label for="rm1">-3</label>
+      </div>
+      <div class="form_radio_btn">
+        <input id="rm05" type="radio" name="r" value="-2" (change)="changeRadius()" [formControl]="r">
+        <label for="rm05">-2</label>
+      </div>
+      <div class="form_radio_btn">
+        <input id="r0" type="radio" name="r" value="-1" (change)="changeRadius()" [formControl]="r">
+        <label for="r0">-1</label>
+      </div>
+      <div class="form_radio_btn">
+        <input id="r05" type="radio" name="r" value="0" (change)="changeRadius()" [formControl]="r">
+        <label for="r05">0</label>
+      </div>
+      <div class="form_radio_btn">
+        <input id="r1" type="radio" name="r" value="1" (change)="changeRadius()" [formControl]="r">
+        <label for="r1">1</label>
+      </div>
+      <div class="form_radio_btn">
+        <input id="r15" type="radio" name="r" value="2" (change)="changeRadius()" [formControl]="r">
+        <label for="r15">2</label>
+      </div>
+      <div class="form_radio_btn">
+        <input id="r2" type="radio" name="r" value="3" (change)="changeRadius()" [formControl]="r">
+        <label for="r2">3</label>
+      </div>
+      <div class="form_radio_btn">
+        <input id="rm15" type="radio" name="r" value="4" (change)="changeRadius()" [formControl]="r">
+        <label for="rm15">4</label>
+      </div>
+      <div class="form_radio_btn">
+        <input id="rm2" type="radio" name="r" value="5" (change)="changeRadius()" [formControl]="r">
+        <label for="rm2">5</label>
+      </div>
+    </label>
+  </div>
+  <button type="submit" name="submit" class="submit-button">Check</button>
+</form>

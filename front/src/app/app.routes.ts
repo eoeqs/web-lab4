@@ -1,27 +1,15 @@
-import {RouterModule, Routes} from "@angular/router";
-import {DataComponent} from "./components/data/data.component";
-import {MainComponent} from "./components/main/main.component";
-import {NgModule} from "@angular/core";
-import {AuthenticationGuard} from "./authentication.guard";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { LoginPageComponent } from './login/login.component'
+import { MainPageComponent } from './main/main.component'
+
+import { AuthenticationGuard } from './guards/authentication.guard';
 
 const routes: Routes = [
-  {
-    path: '',
-    canActivate: [AuthenticationGuard], children: [
-      {
-        path: '',
-        component: DataComponent
-      },
-      {
-        path: 'main',
-        component: MainComponent
-      },
-      {
-        path: '**',
-        redirectTo: ''
-      }
-    ]
-  }
+  { path: 'login', component: LoginPageComponent },
+  { path: 'main', component: MainPageComponent, canActivate: [AuthenticationGuard] },
+  { path: '**', redirectTo: 'login' },
 ];
 
 @NgModule({

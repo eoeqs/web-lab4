@@ -1,43 +1,23 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {AppRoutingModule} from './app.routes';
-import {DataComponent} from './components/data/data.component';
-import {MainComponent} from "./components/main/main.component";
-import {AppComponent} from "./app.component";
-import {ButtonModule} from 'primeng/button';
-import {RadioButtonModule} from "primeng/radiobutton";
-import {RequestInterceptor} from "./request.interceptor";
-import {TableModule} from "primeng/table";
-import {TabViewModule} from "primeng/tabview";
-import {RouterModule} from '@angular/router';
-import {CheckboxModule} from "primeng/checkbox";
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
+import { AppRoutingModule } from './app.routes';
+import { AppComponent } from './app.component';
+import { HeaderComponent } from './login/header/header.component';
+import { LoginFormComponent } from './login/login-form/login-form.component';
+import { LoginPageComponent } from './login/login.component';
+import { MainPageComponent } from './main/main.component';
+import { ResultsComponent } from './main/results/results.component';
+import { GraphComponent } from './main/graph/graph.component';
+import { CoordinatesFormComponent } from './main/coordinates-form/coordinates-form.component';
+import { LogoutComponent } from './main/logout/logout.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DataComponent,
-    MainComponent
-  ],
-    imports: [
-        RouterModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        HttpClientModule,
-        ButtonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        RadioButtonModule,
-        TableModule,
-        TabViewModule,
-        CheckboxModule
-    ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true}],
-  bootstrap: [AppComponent]
+  imports:      [ BrowserModule, CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, AppRoutingModule ],
+  declarations: [ AppComponent, HeaderComponent, LoginFormComponent, LoginPageComponent, MainPageComponent, ResultsComponent, GraphComponent, CoordinatesFormComponent, LogoutComponent],
+  bootstrap:    [ AppComponent ]
 })
-export class AppModule {
-}
+export class AppModule { }
