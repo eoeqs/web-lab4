@@ -1,79 +1,57 @@
 package web.back.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import web.back.dao.PointRepository;
-import web.back.dto.PointCoordinatesDto;
-import web.back.dto.PointDto;
 import web.back.models.Point;
-import web.back.models.User;
-import web.back.services.AuthManager;
-import web.back.services.PointValidator;
+import web.back.security.UsernameDecoder;
+import web.back.services.AreaCheckService;
+import web.back.services.PointValidationService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
+
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/points")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/api")
 public class PointController {
-    private PointRepository pointRepository;
+    private final PointRepository pointRepository;
+    private final AreaCheckService areaCheckService;
+    private final PointValidationService pointValidationService;
 
-    private AuthManager authManager;
-
-    @Autowired
-    public void setAttemptRepository(PointRepository pointRepository) {
-        this.pointRepository = pointRepository;
-    }
-    @Autowired
-    public void setAuthenticationManager(AuthManager authManager) {
-        this.authManager = authManager;
-    }
-
-    @GetMapping("/all")
-    public List<PointDto> getAllPoints(@RequestHeader Map<String, String> headers) {
-        User user = authManager.getOldUserByAuthorizationHeader(headers.get("authorization"));
-        if (user == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "unauthorized");
-        }
-
-        return pointRepository.findPointByUser(user).stream().map(
-                point -> new PointDto(point.getX(), point.getY(), point.getR(), point.isHit())).toList();
-    }
-    @PostMapping("/new")
-    public PointDto checkHit(@RequestHeader Map<String, String> headers, @RequestBody PointCoordinatesDto pointCoordinatesDto) {
-        User user = authManager.getOldUserByAuthorizationHeader(headers.get("authorization"));
-
-        if (user == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "unauthorized");
-        }
-
-        String strX = pointCoordinatesDto.getStrX();
-        String strY = pointCoordinatesDto.getStrY();
-        String strR = pointCoordinatesDto.getStrR();
-
-        if (!PointValidator.validateXYR(strX, strY, strR)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "bad request");
-        }
-
-        Point point = new Point(strX, strY, strR, user);
-
-        pointRepository.save(point);
-        return new PointDto(point.getX(), point.getY(), point.getR(), point.isHit());
-    }
-
-    @PostMapping("/clear")
     @CrossOrigin
-    @Transactional
-    public void clearAttempts(@RequestHeader Map<String, String> headers) {
-        User user = authManager.getOldUserByAuthorizationHeader(headers.get("authorization"));
+    @GetMapping("/points")
+    public ResponseEntity<List<Point>> getAllPoints(HttpServletRequest request) {
+        String token = request.getHeader(AUTHORIZATION);
+        String author = UsernameDecoder.decodeUsername(token);
+        return ResponseEntity.ok(pointRepository.findAllByUsername(author));
+    }
 
-        if (user == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "unauthorized");
+    @CrossOrigin
+    @PostMapping("/points/checkhit")
+    public ResponseEntity<Point> checkPoint(@RequestBody Point point, HttpServletRequest request) {
+        String token = request.getHeader(AUTHORIZATION);
+        String author = UsernameDecoder.decodeUsername(token);
+        if (pointValidationService.isValid(point)) {
+            areaCheckService.check(point);
+            point.setUsername(author);
+            pointRepository.save(point);
+            return ResponseEntity.ok(point);
+        } else {
+            return ResponseEntity.badRequest().build();
         }
-        pointRepository.deletePointByUser(user);
+    }
+
+    @CrossOrigin
+    @GetMapping("/points/clear")
+    public ResponseEntity<List<Point>> clearPoints(HttpServletRequest request) {
+        String token = request.getHeader(AUTHORIZATION);
+        String author = UsernameDecoder.decodeUsername(token);
+        pointRepository.clearHitsByUsername(author);
+        return ResponseEntity.ok(pointRepository.findAllByUsername(author));
     }
 }

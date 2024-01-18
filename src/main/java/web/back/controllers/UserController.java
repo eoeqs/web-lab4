@@ -2,78 +2,52 @@
 package web.back.controllers;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import web.back.dao.UserRepository;
-import web.back.dto.SessionDto;
-import web.back.dto.UserDto;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import web.back.models.User;
-import web.back.services.AuthManager;
-import web.back.services.SessionHandler;
+import web.back.services.UserService;
 
-import java.util.Map;
+import java.net.URI;
 
 
 @RestController
-@RequestMapping("/web-4-eoeqs/api/users")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
-    private UserRepository userRepository;
-    private AuthManager authManager;
-    private SessionHandler handler;
-
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Autowired
-    public void setAuthenticationManager(AuthManager authManager) {
-        this.authManager = authManager;
-    }
-    @Autowired
-    public void setSessionHandler(SessionHandler handler) {
-        this.handler = handler;
-    }
+    private UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
 
-    @PostMapping("/check")
-    public boolean checkUser(@RequestBody UserDto userDto) {
-        final String sessionID = handler.register(userDto.getUsername());
-        final SessionDto sessionDto = new SessionDto();
-        sessionDto.setSessionID(sessionID);
-        String username = userDto.getUsername();
-        String password = userDto.getPassword();
-        User user = authManager.getOldUser(username, password);
-        if (user == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "bad request");
+
+    @CrossOrigin
+    @PostMapping("/auth")
+    private ResponseEntity<?> checkAuth(@RequestBody User user) {
+        User realUser = userService.getUser(user.getUsername());
+        if (realUser == null) {
+            return ResponseEntity.badRequest().body("No such user");
+        } else if (!passwordEncoder.matches(user.getPassword(), realUser.getPassword())) {
+            return ResponseEntity.badRequest().body("Wrong password");
+        } else {
+            return ResponseEntity.ok().body("Access provided");
         }
-        return true;
     }
 
-    @PostMapping("/new")
-    public boolean getNewUser(@RequestBody UserDto userDto) {
-        String username = userDto.getUsername();
-        String password = userDto.getPassword();
-        User user = authManager.setNewUser(username, password);
-        if (user == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "bad request");
+    @CrossOrigin
+    @PostMapping("/save")
+    private ResponseEntity<?> saveUser(@RequestBody User user) {
+        User dbUser = userService.getUser(user.getUsername());
+        if (dbUser == null) {
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toString());
+            return ResponseEntity.created(uri).body(userService.saveUser(user));
+        } else {
+            return ResponseEntity.badRequest().body("User already exists");
         }
-        return true;
     }
-
-    @DeleteMapping("/logout")
-    public ResponseEntity<?> logoutUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authentication) {
-        System.out.println("Received authentication token: " + authentication);
-
-        handler.invalidate(authentication);
-        return ResponseEntity.noContent().build();
-    }
-
 
 }

@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.2.1'
+    id 'org.springframework.boot' version '2.6.2'
     id 'io.spring.dependency-management' version '1.1.4'
 }
 
@@ -16,17 +16,25 @@ repositories {
 }
 
 dependencies {
-
+    runtimeOnly 'org.postgresql:postgresql:42.6.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    runtimeOnly 'org.postgresql:postgresql:42.6.0'
+//    implementation 'org.springframework.boot:spring-cloud-starter-parent'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+//    implementation 'org.springframework.security:spring-security-core'
+//    implementation 'org.springframework.security:spring-security-web'
+//    implementation 'org.springframework.security:spring-security-config:5.6.0'
+
+    implementation 'com.auth0:java-jwt:3.18.2'
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
 
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
     testCompileOnly 'org.projectlombok:lombok:1.18.30'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
-tasks.named('test') {
-    useJUnitPlatform()
-}
+
+

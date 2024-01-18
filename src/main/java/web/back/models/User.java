@@ -1,27 +1,19 @@
 package web.back.models;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import web.back.services.PasswordManager;
+
 
 @Data
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
+public class User  {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, unique = true)
+    @Column(name = "username")
     private String username;
 
-    @Column(nullable = false)
+    @Column(name = "password")
     private String password;
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = PasswordManager.getHash(password);
-    }
 }

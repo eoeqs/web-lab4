@@ -1,10 +1,14 @@
 package web.back.models;
 
-import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import web.back.services.AreaCheck;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -12,32 +16,35 @@ import web.back.services.AreaCheck;
 @Table(name = "points")
 @Getter
 public class Point {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "point_seq")
+    @SequenceGenerator(name = "point_seq", sequenceName = "point_id_sequence")
     private Long id;
 
-    @Column(nullable = false)
-    private double x;
+    @Column(name = "x")
+    private Double x;
 
-    @Column(nullable = false)
-    private double y;
+    @Column(name = "y")
+    private Double y;
 
-    @Column(nullable = false)
-    private int r;
+    @Column(name = "r")
+    private Double r;
 
-    @Column(nullable = false)
-    private boolean isHit;
+    @Column(name = "time")
+    private String time;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "execution")
+    private String execution;
 
-    public Point(String strX, String strY, String strR, User user) {
-        x = Double.parseDouble(strX);
-        y = Double.parseDouble(strY);
-        r = Integer.parseInt(strR);
-        this.user = user;
+    @Column(name = "result")
+    private boolean result;
 
-        isHit = AreaCheck.checkHit(this.x, this.y, this.r);
+    @Column(name = "username")
+    private String username;
+
+    public void setTime(Date time) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyy HH:mm:ss");
+        this.time = sdf.format(time);
     }
 }
