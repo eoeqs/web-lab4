@@ -27,7 +27,7 @@ export class CoordinatesFormComponent implements OnInit {
     Validators.max(3),
   ]);
 
-  r = new FormControl(null, [
+  r = new FormControl('1', [
     Validators.required,
     Validators.min(0),
   ]);
@@ -37,11 +37,12 @@ export class CoordinatesFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.changeRadius()
   }
 
   submit(): void {
     if (this.x.value && this.y.value && this.r.value) {
-      this.hitService.addHit(this.x.value, this.y.value, this.r.value);
+      this.hitService.addHit(this.x.value, this.y.value, Number.parseFloat(this.r.value));
     } else {
       this.x.markAsTouched();
       this.y.markAsTouched();

@@ -27,14 +27,16 @@ export class GraphComponent implements OnInit {
   @Input() set radius(num: number) {
     this.r = num;
     if (this.r >= 0) {
-      this.updateDpath();
+      this.drawDpath();
+
     }
   }
 
   constructor(hitService: HitUpdaterService) {
     this.hitService = hitService;
-    this.updateDpath();
-    for (let i = 30; i <= 270; i += 30) {
+
+    this.drawDpath();
+    for (let i = 50; i <= 250; i += 50) {
       this.dashes.push(i);
     }
   }
@@ -53,22 +55,17 @@ export class GraphComponent implements OnInit {
     });
   }
 
-  updateDpath() {
-    this.Dpath = `M 150 ${150 + this.r * 30}
-                  L ${150 - this.r * 30} ${150 + this.r * 30}
-                  L ${150 - this.r * 30} 150
+  drawDpath() {
+    this.Dpath = `M 200 150 L 150 150 L 150 50 C 100 50 50 100 50 150 L 50 200 L 150 200 L 200 150`
 
-                  L ${150 - this.r * 30} 150
-                  L 150 ${150 - this.r * 30}
-                  L 150 150
-                  L ${150 + this.r * 30} 150
-                  A ${this.r * 30} ${this.r * 30} 0 0 1 150 ${150 + this.r * 30}
-                  `
   }
 
+
+
   checkHit(event: MouseEvent) {
-    let x = Number.parseFloat(((event.offsetX - 150) / 40).toFixed(2));
-    let y = Number.parseFloat(((event.offsetY - 150) / -40).toFixed(2));
+    let x = Number.parseFloat(((event.offsetX - 150) / 100).toFixed(2));
+    let y = Number.parseFloat(((event.offsetY - 150) / -100).toFixed(2));
+    console.log(x,y)
     if (x < -3 || x > 5 || y < -3 || y > 3) return;
     if (this.r >= 0) {
       this.hitService.addHit(x, y, this.r);
