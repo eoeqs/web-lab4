@@ -33,6 +33,7 @@ export class HitUpdaterService {
           this.hitRequestStatusStorage.next(value)
         }
       })
+
     return this.hitRequestStatusStorage.asObservable();
   };
 

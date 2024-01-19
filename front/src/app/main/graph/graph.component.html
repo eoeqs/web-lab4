@@ -73,7 +73,7 @@
         stroke-width="1">
   </line>
   <text class="rLabel" id="r" x="245" y="140" stroke="black">{{r}}</text>
-  <text class="rLabel" id="r/2" x="185" y="140" stroke="black">{{r/2}}</text>
+  <text class="rLabel" id="r/2" x="185" y="140" stroke="black">{{r / 2}}</text>
   <text class="rLabel" id="-r/2" x="77" y="140" stroke="black">{{-r / 2}}</text>
   <text class="rLabel" id="-r" x="37" y="140" stroke="black">{{-r}}</text>
   <text class="rLabel" id="r" x="156" y="55" stroke="black">{{r}}</text>
@@ -91,10 +91,20 @@
     id="graph-path"
 
   />
+  <ng-container *ngIf="isFirstLoad()">
+    <circle
+      *ngFor="let point of getResultsFirstTime()" [attr.cx]="(point.x * 100)/point.r + 150"
+      [attr.cy]="-(point.y * 100)/point.r + 150" r="3"
+      stroke-width="1" stroke="black" attr.fill="{{point.result ? 'green' : 'red'}} " fill-opacity="1" #circle
+    />
+    <ng-container *ngIf="isFirstLoad()"> </ng-container>
+  </ng-container>
 
-  <circle
-    *ngFor="let point of getResults()" [attr.cx]="point.x * 100 + 150" [attr.cy]="-point.y * 100 + 150" r="3"
-    stroke-width="1" stroke="black" attr.fill="{{point.result ? 'green' : 'red'}} " fill-opacity="1"
-  />
-
+<!--  <ng-container *ngIf="showCircles">-->
+<!--    <circle-->
+<!--      *ngFor="let point of updateResults(r)" [attr.cx]="(point.x * 100)/point.r + 150"-->
+<!--      [attr.cy]="-(point.y * 100)/point.r + 150" r="3"-->
+<!--      stroke-width="1" stroke="black" attr.fill="{{point.result ? 'green' : 'red'}} " fill-opacity="1" #circle-->
+<!--    />-->
+<!--  </ng-container>-->
 </svg>

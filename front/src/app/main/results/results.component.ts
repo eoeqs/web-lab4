@@ -29,7 +29,6 @@ export class ResultsComponent implements OnInit {
           } else {
             this.results.push(value as unknown as Result);
           }
-          console.log("table", this.results);
 
         }
       }

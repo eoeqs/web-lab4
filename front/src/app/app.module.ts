@@ -18,6 +18,7 @@ import { LogoutComponent } from './main/logout/logout.component';
 @NgModule({
   imports:      [ BrowserModule, CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, AppRoutingModule ],
   declarations: [ AppComponent, HeaderComponent, LoginFormComponent, LoginPageComponent, MainPageComponent, ResultsComponent, GraphComponent, CoordinatesFormComponent, LogoutComponent],
-  bootstrap:    [ AppComponent ]
+  bootstrap:    [ AppComponent ],
+  providers: [GraphComponent]
 })
 export class AppModule { }

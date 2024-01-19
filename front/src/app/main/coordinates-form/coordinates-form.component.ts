@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Output, EventEmitter} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {HitUpdaterService} from '../../services/hit-update.service'
 
 import {RegExValidator} from './regex-validator';
+import {GraphComponent} from "../graph/graph.component";
 
 @Component({
   selector: 'app-coordinates-form',
@@ -32,7 +33,7 @@ export class CoordinatesFormComponent implements OnInit {
     Validators.min(0),
   ]);
 
-  constructor(hitService: HitUpdaterService) {
+  constructor(hitService: HitUpdaterService, private graphComponent: GraphComponent) {
     this.hitService = hitService;
   }
 
@@ -58,6 +59,8 @@ export class CoordinatesFormComponent implements OnInit {
       if (numRad < 0) {
         this.r.markAsTouched();
       }
+      console.log("current radius", numRad)
+      this.graphComponent.updateResults(numRad);
       this.onRadiusChange.emit(numRad);
     }
   }
