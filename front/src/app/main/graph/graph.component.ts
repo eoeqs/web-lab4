@@ -57,7 +57,6 @@ export class GraphComponent implements OnInit {
   }
 
   getResults(): Result[] {
-
     this.resultsGraph.forEach(point => {
       point.result = this.isPointInArea(point.x, point.y, this.radius);
     });

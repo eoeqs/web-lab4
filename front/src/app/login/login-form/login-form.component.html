@@ -38,7 +38,11 @@
     {{ loginErrorMessage }}
   </div>
 
+  <div *ngIf="registrationSuccess" class="success">
+    Successfully signed up. Now you can log in.
+  </div>
 
-  <button type="submit">SignIn</button>
+
+  <button type="submit">Log in</button>
   <button type="button" (click)="signUp()">Register</button>
 </form>

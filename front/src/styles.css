@@ -8,14 +8,15 @@ body {
 
 .leftside {
   float: left;
-  width: 50%;
+  width: 40%;
   margin-top: 2%;
-  margin-left: 10%;
+  margin-left: 20%;
 }
 
 .rightside {
-  float: right;
+  float: inherit;
   margin-right: 10%;
+  margin-bottom: 5%
 }
 
 .error-hovered {
@@ -25,9 +26,9 @@ body {
 
 /* app-header */
 
-app-header .header {
+app-header #header {
+  text-align: center;
   color: black;
-  text-decoration: underline;
   font-family: "fugue", sans-serif;
   font-size: large;
   font-weight: 300;
@@ -35,13 +36,10 @@ app-header .header {
   margin: 0 0 10px;
 }
 
-app-header .header:hover {
-  color: purple;
-}
 
 /* app-login-form */
 
-input{
+input {
   width: 400px;
   height: 30px;
   background: #f5f3f3;
@@ -60,11 +58,11 @@ app-login-form input {
   outline: none;
 }
 
-input:hover{
+input:hover {
   border: 1px solid mediumpurple;
 }
 
-button{
+button {
   display: block;
   background: white;
   font-family: "fugue", sans-serif;
@@ -81,7 +79,7 @@ button{
   height: 60px;
 }
 
-button:hover{
+button:hover {
   background: mediumpurple;
 }
 
@@ -103,7 +101,6 @@ app-login-form .alert, app-login-form .alert-placeholder {
 /* results-table */
 
 table {
-  width: 70%;
   table-layout: fixed;
   border-collapse: collapse;
   border-style: hidden;
@@ -201,12 +198,13 @@ app-coordinates-form input {
   transition: .2s ease-in;
 }
 
-.submit-button{
-  margin-top: 5%;
-  margin-bottom: 5%;
+.submit-button {
+  margin: 20px 10px 20px 10px;
+  width: 100px;
+  height: 40px
 }
 
-#graphic{
+#graphic {
   transform: scale(1.5);
 }
 
@@ -222,19 +220,19 @@ app-coordinates-form input {
 }
 
 @media screen and (max-width: 1040px) {
-  .leftside{
+  .leftside {
     float: left;
     width: 50%;
     margin-top: 2%;
     margin-left: 3%;
   }
 
-  #graphic{
+  #graphic {
     transform: scale(1.2);
   }
 
   app-coordinates-form input {
-    margin:  auto;
+    margin: auto;
     width: 300px;
     padding: 5px;
   }
@@ -245,7 +243,7 @@ app-coordinates-form input {
 }
 
 @media screen and (max-width: 720px) {
-  .leftside{
+  .leftside {
     display: inline-block;
     justify-content: center;
     align-items: center;
@@ -254,7 +252,7 @@ app-coordinates-form input {
     width: 99%;
   }
 
-  #graphic{
+  #graphic {
     transform: scale(1.3);
     float: left;
     justify-content: center;
@@ -267,11 +265,11 @@ app-coordinates-form input {
     display: none;
   }
 
-  .special-header{
+  .special-header {
     font-size: medium;
   }
 
-  .logout-button{
+  .logout-button {
     width: 70%;
   }
 
@@ -280,4 +278,9 @@ app-coordinates-form input {
     margin-top: 7%;
   }
 
+}
+.success {
+  text-align: center;
+
+  color: green;
 }

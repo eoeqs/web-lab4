@@ -40,15 +40,13 @@ export class UserService {
 
   signUp(username: string, password: string) {
     if (username && password) {
-      console.log("this is un and pw", username, password)
       this.authRequestService.signUpRequest({'username': username, 'password': password, 'error': ''}).subscribe({
         next: value => {
           console.log(value);
           if (value != undefined) {
-            console.log("Succesfully signed up");
+            console.log("Successfully signed up");
             this.isSignedUpVal = true;
             this.signUpErrorMessage = '';
-            this.signIn(username,password);
             } else {
             console.error("Problem with response after sign up request")
           }
@@ -66,7 +64,7 @@ export class UserService {
           if (value != undefined && this.authToken != undefined) {
             this.isLoggedInVal = true;
             this.loginErrorMessage = '';
-
+            console.log("tried to sign in")
           } else {
             this.authToken = {access_token: ''};
             this.isLoggedInVal = false;
