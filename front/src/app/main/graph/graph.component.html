@@ -91,20 +91,10 @@
     id="graph-path"
 
   />
-  <ng-container *ngIf="isFirstLoad()">
     <circle
-      *ngFor="let point of getResultsFirstTime()" [attr.cx]="(point.x * 100)/point.r + 150"
-      [attr.cy]="-(point.y * 100)/point.r + 150" r="3"
+      *ngFor="let point of getResults()" [attr.cx]="(point.x * 100)/radius + 150"
+      [attr.cy]="-(point.y * 100)/radius + 150" r="3"
       stroke-width="1" stroke="black" attr.fill="{{point.result ? 'green' : 'red'}} " fill-opacity="1" #circle
     />
-    <ng-container *ngIf="isFirstLoad()"> </ng-container>
-  </ng-container>
 
-<!--  <ng-container *ngIf="showCircles">-->
-<!--    <circle-->
-<!--      *ngFor="let point of updateResults(r)" [attr.cx]="(point.x * 100)/point.r + 150"-->
-<!--      [attr.cy]="-(point.y * 100)/point.r + 150" r="3"-->
-<!--      stroke-width="1" stroke="black" attr.fill="{{point.result ? 'green' : 'red'}} " fill-opacity="1" #circle-->
-<!--    />-->
-<!--  </ng-container>-->
 </svg>

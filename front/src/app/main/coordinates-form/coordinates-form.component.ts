@@ -17,6 +17,7 @@ export class CoordinatesFormComponent implements OnInit {
 
   hitService: HitUpdaterService;
 
+
   x = new FormControl(null, [
     Validators.required,
   ]);
@@ -60,7 +61,7 @@ export class CoordinatesFormComponent implements OnInit {
         this.r.markAsTouched();
       }
       console.log("current radius", numRad)
-      this.graphComponent.updateResults(numRad);
+      this.graphComponent.radius =  numRad;
       this.onRadiusChange.emit(numRad);
     }
   }

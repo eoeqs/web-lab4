@@ -23,8 +23,7 @@ export class GraphComponent implements OnInit {
   hitServiceSubscription!: Subscription;
   private resultsGraph: Result[] = [];
   hitService: HitUpdaterService;
-  showCircles = false;
-  showCirclesOnFirstLoad = true;
+
 
   ngOnInit() {
     this.hitServiceSubscription = this.hitService.hitRequestStatus$.subscribe({
@@ -38,26 +37,6 @@ export class GraphComponent implements OnInit {
           }
         }
       }
-    });
-  }
-
-  updateResults(radius: number): Result[] {
-    this.showCircles = true;
-    this.showCirclesOnFirstLoad = false;
-    let resultsCopy: Result[] = [];
-    this.getResults().forEach(value => resultsCopy.push(Object.assign({}, value)))
-    console.log(this.resultsGraph)
-    this.clearGraph();
-    this.resultsGraph = resultsCopy;
-    this.r = radius;
-    console.log(this.resultsGraph)
-    return this.resultsGraph;
-  }
-
-
-  clearGraph() {
-    this.circleElements?.forEach(circleElement => {
-      this.renderer.removeChild(circleElement.nativeElement.parentNode, circleElement.nativeElement);
     });
   }
 
@@ -78,28 +57,13 @@ export class GraphComponent implements OnInit {
   }
 
   getResults(): Result[] {
-    console.log(this.resultsGraph, this.showCirclesOnFirstLoad)
+
+    this.resultsGraph.forEach(point => {
+      point.result = this.isPointInArea(point.x, point.y, this.radius);
+    });
     return this.resultsGraph;
   }
 
-  getResultsFirstTime(): Result[] {
-    console.log("call here", this.showCirclesOnFirstLoad)
-    console.log(this.resultsGraph)
-    // let resGraph = this.resultsGraph;
-    // this.showCirclesOnFirstLoad = false;
-    return this.resultsGraph;
-  }
-
-  isFirstLoad(): boolean {
-    console.log(this.resultsGraph)
-    console.log(this.showCirclesOnFirstLoad)
-    if (this.showCirclesOnFirstLoad) {
-      this.showCirclesOnFirstLoad = false;
-      return !this.showCirclesOnFirstLoad;
-    }
-    return false;
-
-  }
 
   readonly dashes = Array<number>();
   r = 1;
@@ -107,9 +71,11 @@ export class GraphComponent implements OnInit {
 
   @Input() set radius(num: number) {
     this.r = num;
-    if (this.r >= 0) {
-      // this.drawDpath();
-    }
+    console.log(this.r)
+  }
+
+  get radius(): number {
+    return this.r;
   }
 
   constructor(private cdr: ChangeDetectorRef, hitService: HitUpdaterService, private renderer: Renderer2) {
@@ -126,12 +92,10 @@ export class GraphComponent implements OnInit {
   }
 
 
-
   checkHit(event: MouseEvent) {
     console.log(event.offsetX, event.offsetY)
     let x = Number.parseFloat(((event.offsetX - 150) / 100 * this.r).toFixed(2));
     let y = Number.parseFloat(((event.offsetY - 150) / -100 * this.r).toFixed(2));
-    console.log(x, y)
     if (x < -3 || x > 5 || y < -3 || y > 3) return;
     if (this.r >= 0) {
       this.hitService.addHit(x, y, this.r);
